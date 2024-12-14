@@ -15,11 +15,13 @@ namespace VetTime.Data.Models
             Appointments=new HashSet<Appointment>();
             Animals=new HashSet<Animal>();
             Ratings = new HashSet<Rating>();
+            CreatedOn = DateTime.Now;
+            IsDeleted = false;
         }
 
         [Required]
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         [Required]
         [StringLength(50, MinimumLength = 2)]
@@ -34,5 +36,12 @@ namespace VetTime.Data.Models
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<Animal> Animals { get; set; }
         public ICollection<Rating> Ratings { get; set; }
+
+        public DateTime CreatedOn { get; init; }
+        public DateTime? UpdatedAt { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public Guid? DeletedBy { get; set; }
     }
 }

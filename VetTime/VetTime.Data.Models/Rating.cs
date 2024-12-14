@@ -10,6 +10,12 @@ namespace VetTime.Data.Models
 {
     public class Rating
     {
+        public Rating()
+        {
+            CreatedOn = DateTime.Now;
+            IsDeleted = false;
+        }
+
         [Required]
         [ForeignKey(nameof(Veterinarian))]
         public Guid VetId { get; set; }
@@ -26,6 +32,13 @@ namespace VetTime.Data.Models
 
         public DateTime DateTime { get; set; }
 
-        public string? Comment { get; set; } 
+        public string? Comment { get; set; }
+
+        public DateTime CreatedOn { get; init; }
+        public DateTime? UpdatedAt { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public Guid? DeletedBy { get; set; }
     }
 }

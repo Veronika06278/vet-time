@@ -13,16 +13,25 @@ namespace VetTime.Data.Models
         {
             Id= Guid.NewGuid();
             Addresses=new HashSet<Address>();
+            CreatedOn = DateTime.Now;
+            IsDeleted = false;
         }
 
         [Required]
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         [Required]
         [StringLength(50)]
         public string Name { get; set; } = null!;
 
         public ICollection<Address> Addresses { get; set; }
+
+        public DateTime CreatedOn { get; init; }
+        public DateTime? UpdatedAt { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public Guid? DeletedBy { get; set; }
     }
 }

@@ -14,11 +14,13 @@ namespace VetTime.Data.Models
         {
             Id = Guid.NewGuid();
             Veterinarians = new HashSet<Veterinarian>();
+            CreatedOn = DateTime.Now;
+            IsDeleted = false;
         }
 
         [Required]
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         [Required]
         [MaxLength(100)]
@@ -38,6 +40,13 @@ namespace VetTime.Data.Models
         public City City { get; set; }=null!;
 
         public ICollection<Veterinarian> Veterinarians { get; set; }
+
+        public DateTime CreatedOn { get; init; }
+        public DateTime? UpdatedAt { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public Guid? DeletedBy { get; set; }
 
     }
 }

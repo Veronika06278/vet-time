@@ -14,11 +14,13 @@ namespace VetTime.Data.Models
         public Appointment()
         {
             Id= Guid.NewGuid();
+            CreatedOn = DateTime.Now;
+            IsDeleted=false;
         }
 
         [Required]
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         [Required]
         [ForeignKey(nameof(Client))]
@@ -40,5 +42,12 @@ namespace VetTime.Data.Models
         [ForeignKey(nameof(Animal))]
         public Guid AnimalId { get; set; }
         public Animal Animal { get; set; } = null!;
+
+        public DateTime CreatedOn { get; init; }
+        public DateTime? UpdatedAt { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public Guid? DeletedBy { get; set; }
     }
 }
