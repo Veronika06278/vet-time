@@ -1,9 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace VetTime.Data.Models
 {
     public class Veterinarian
     {
+        public Veterinarian()
+        {
+            Id= Guid.NewGuid();
+            Ratings = new HashSet<Rating>();
+            Appointments = new HashSet<Appointment>();
+        }
+
         [Required]
         [Key]
         public Guid Id { get; set; }
@@ -16,6 +25,16 @@ namespace VetTime.Data.Models
         [MaxLength(50)]
         public string LastName { get; set; } = null!;
 
-        //TODO:Navigation Properties
+        [ForeignKey(nameof(Address))]
+        [Required]
+        public Guid AddressId { get; set; }
+        public Address Address { get; set; }= null!;
+
+        public ICollection<Rating> Ratings { get; set; }
+
+        public ICollection<Appointment> Appointments { get; set; }
+
+
+        
     }
 }

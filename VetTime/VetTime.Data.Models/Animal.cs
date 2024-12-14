@@ -9,16 +9,20 @@ using VetTime.Data.Models.Enums;
 
 namespace VetTime.Data.Models
 {
-    public class Appointment
+    public class Animal
     {
-        public Appointment()
+        public Animal()
         {
-            Id= Guid.NewGuid();
+            Id=Guid.NewGuid();
         }
 
         [Required]
         [Key]
         public Guid Id { get; set; }
+        [Required]
+        public string Name { get; set; } = null!;
+        public string? PhotoURL { get; set; }
+        public AnimalCategory AnimalCategory { get; set; }
 
         [Required]
         [ForeignKey(nameof(Client))]
@@ -26,19 +30,8 @@ namespace VetTime.Data.Models
         public Client Client { get; set; } = null!;
 
         [Required]
-        [ForeignKey(nameof(Veterinarian))]
-        public Guid VetId { get; set; }
-        public Veterinarian Veterinarian { get; set; } = null!;
-
-        public AppointmentType AppointmentType { get; set; }
-
-        public DateTime AppointmentTime { get; set; }
-
-        public bool HasVisited { get; set; }
-
-        [Required]
-        [ForeignKey(nameof(Animal))]
-        public Guid AnimalId { get; set; }
-        public Animal Animal { get; set; } = null!;
+        [ForeignKey(nameof(Breed))]
+        public Guid BreedId { get; set; }
+        public Breed Breed { get; set; } = null!;
     }
 }

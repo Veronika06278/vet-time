@@ -10,9 +10,15 @@ namespace VetTime.Data.Models
 {
     public class Address
     {
+        public Address()
+        {
+            Id = Guid.NewGuid();
+            Veterinarians = new HashSet<Veterinarian>();
+        }
+
         [Required]
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -31,7 +37,7 @@ namespace VetTime.Data.Models
         
         public City City { get; set; }=null!;
 
-
+        public ICollection<Veterinarian> Veterinarians { get; set; }
 
     }
 }

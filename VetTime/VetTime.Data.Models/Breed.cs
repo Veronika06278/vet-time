@@ -4,25 +4,23 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VetTime.Data.Models.Enums;
 
 namespace VetTime.Data.Models
 {
-    public class City
+    public class Breed
     {
-        public City()
+        public Breed()
         {
-            Id= Guid.NewGuid();
-            Addresses=new HashSet<Address>();
+            Id=Guid.NewGuid();
+            Animals = new HashSet<Animal>();
         }
-
-        [Required]
         [Key]
-        public Guid Id { get; set; }
-
         [Required]
-        [StringLength(50)]
-        public string Name { get; set; } = null!;
+        public Guid Id { get; set; }
+        [Required]
+        public string BreedName { get; set; } = null!;
 
-        public ICollection<Address> Addresses { get; set; }
+        public ICollection<Animal> Animals { get; set; }
     }
 }

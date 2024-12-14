@@ -9,6 +9,14 @@ namespace VetTime.Data.Models
 {
     public class Client
     {
+        public Client()
+        {
+            Id = Guid.NewGuid();
+            Appointments=new HashSet<Appointment>();
+            Animals=new HashSet<Animal>();
+            Ratings = new HashSet<Rating>();
+        }
+
         [Required]
         [Key]
         public Guid Id { get; set; }
@@ -24,5 +32,7 @@ namespace VetTime.Data.Models
         public int NotVisitedCounter { get; set; }
 
         public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<Animal> Animals { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
     }
 }
