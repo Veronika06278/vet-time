@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VetTime.Data.Models;
 
 namespace VetTime.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,IdentityRole<Guid>,Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -20,14 +21,7 @@ namespace VetTime.Data
         public DbSet<Breed> Breeds { get; set; }
         public DbSet<Animal> Animals { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (optionsBuilder.IsConfigured == false)
-            {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-OE48P6N;Database=VetTime;Trusted_Connection=True;");
-            }
-            
-        }
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
