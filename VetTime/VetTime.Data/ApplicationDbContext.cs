@@ -39,7 +39,12 @@ namespace VetTime.Data
                 .WithMany(c => c.Appointments)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            
+            builder.Entity<Veterinarian>()
+               .HasOne(v => v.User)
+               .WithOne(u => u.Veterinarian)
+               .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

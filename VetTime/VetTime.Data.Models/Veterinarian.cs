@@ -32,6 +32,11 @@ namespace VetTime.Data.Models
         public Guid AddressId { get; set; }
         public Address Address { get; set; }= null!;
 
+        [ForeignKey(nameof(User))]
+        [Required]
+        public Guid UserId { get; set; }
+        public ApplicationUser User { get; set; } = null!;
+
         public ICollection<Rating> Ratings { get; set; }
 
         public ICollection<Appointment> Appointments { get; set; }

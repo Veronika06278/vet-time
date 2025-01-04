@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,11 @@ namespace VetTime.Data.Models
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<Animal> Animals { get; set; }
         public ICollection<Rating> Ratings { get; set; }
+
+        [ForeignKey(nameof(User))]
+        [Required]
+        public Guid UserId { get; set; }
+        public ApplicationUser User { get; set; }=null!;
 
         public DateTime CreatedOn { get; init; }
         public DateTime? UpdatedAt { get; set; }
