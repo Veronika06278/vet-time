@@ -35,7 +35,7 @@ namespace VetTime.Data.Models
 
         [ForeignKey(nameof(City))]
         [Required]
-        public int CityId { get; set; }
+        public Guid CityId { get; set; }
         
         public City City { get; set; }=null!;
 

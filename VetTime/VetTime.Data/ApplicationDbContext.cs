@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using VetTime.Data.Models;
 
 namespace VetTime.Data
@@ -25,12 +26,20 @@ namespace VetTime.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
             builder.Entity<Rating>()
                 .HasKey(r => new
                 {
                     r.VetId,
                     r.ClientId
                 });
+
+            builder.Entity<Appointment>()
+                .HasOne(a => a.Client)
+                .WithMany(c => c.Appointments)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            
         }
     }
 }
