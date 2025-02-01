@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
+using VetTime.Data.Configurations;
 using VetTime.Data.Models;
+using VetTime.Data.Seeding;
 
 namespace VetTime.Data
 {
@@ -44,7 +46,12 @@ namespace VetTime.Data
                .WithOne(u => u.Veterinarian)
                .OnDelete(DeleteBehavior.Restrict);
 
-
+            //seeding data
+            builder.ApplyConfiguration<ApplicationUser>(new ApplicationUserConfiguration());
+            builder.ApplyConfiguration<Client>(new ClientConfiguration());
+            builder.ApplyConfiguration<City>(new CityConfiguration());
+            builder.ApplyConfiguration<Address>(new AddressConfuration());
+            builder.ApplyConfiguration<Veterinarian>(new VeterinarianConfiguration());
         }
     }
 }

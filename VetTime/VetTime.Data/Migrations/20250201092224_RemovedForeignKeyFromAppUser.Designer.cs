@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VetTime.Data;
 
@@ -11,9 +12,11 @@ using VetTime.Data;
 namespace VetTime.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250201092224_RemovedForeignKeyFromAppUser")]
+    partial class RemovedForeignKeyFromAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,18 +205,6 @@ namespace VetTime.Data.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Addresses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("4de1b74b-9a84-4b00-a70f-178b7956ef32"),
-                            CityId = new Guid("e1e9bc98-8d9a-42a9-b07b-9523ff504ab1"),
-                            CreatedOn = new DateTime(2025, 2, 1, 11, 28, 2, 701, DateTimeKind.Local).AddTicks(4158),
-                            District = "Lozenets",
-                            IsDeleted = false,
-                            Number = 16,
-                            Street = "Kozyak"
-                        });
                 });
 
             modelBuilder.Entity("VetTime.Data.Models.Animal", b =>
@@ -335,42 +326,6 @@ namespace VetTime.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("09d568fa-092d-4fce-968b-37eedbdfdbba"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "739dd947-d4ac-4698-905a-57f162d5ec22",
-                            Email = "client@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "CLIENT@GMAIL.COM",
-                            NormalizedUserName = "CLIENT@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEs/D/qkt8I8H8Tb5pQ72dW3gx8kDzrMeaj4YQ6a3S3n1xDAVC8HiKmUp9+/Zq+FxA==",
-                            PhoneNumber = "0886578436",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "5b3e881c-bfe4-43f2-a4d8-e2d28af0293a",
-                            TwoFactorEnabled = false,
-                            UserName = "client@gmail.com"
-                        },
-                        new
-                        {
-                            Id = new Guid("2c80bd0d-c688-4ea3-ab33-9eb542b43b4c"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "95301724-cfb9-46d5-834c-92601cf4013c",
-                            Email = "veterinar@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "VETERINAR@GMAIL.COM",
-                            NormalizedUserName = "VETERINAR@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK9AAGsTJyaPKfV0YWe4SipqpnBkc+GrMvfyjicuJ/+tc4DhOWIDuiPw8aYgomGNpQ==",
-                            PhoneNumber = "0887564962",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "1e860808-5c39-42fd-ba4a-e71f2286a26c",
-                            TwoFactorEnabled = false,
-                            UserName = "veterinar@gmail.com"
-                        });
                 });
 
             modelBuilder.Entity("VetTime.Data.Models.Appointment", b =>
@@ -491,15 +446,6 @@ namespace VetTime.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e1e9bc98-8d9a-42a9-b07b-9523ff504ab1"),
-                            CreatedOn = new DateTime(2025, 2, 1, 11, 28, 2, 701, DateTimeKind.Local).AddTicks(3917),
-                            IsDeleted = false,
-                            Name = "Sofia"
-                        });
                 });
 
             modelBuilder.Entity("VetTime.Data.Models.Client", b =>
@@ -548,18 +494,6 @@ namespace VetTime.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Clients");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b3e77258-dd68-4b24-ae5a-98968d7ec371"),
-                            CreatedOn = new DateTime(2025, 2, 1, 11, 28, 2, 701, DateTimeKind.Local).AddTicks(3029),
-                            FirstName = "Nicole",
-                            IsDeleted = false,
-                            LastName = "Aleksieva",
-                            NotVisitedCounter = 0,
-                            UserId = new Guid("09d568fa-092d-4fce-968b-37eedbdfdbba")
-                        });
                 });
 
             modelBuilder.Entity("VetTime.Data.Models.Rating", b =>
@@ -652,18 +586,6 @@ namespace VetTime.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Veterinarians");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e1da8c11-27f5-4a8b-8c22-abec84d1995b"),
-                            AddressId = new Guid("4de1b74b-9a84-4b00-a70f-178b7956ef32"),
-                            CreatedOn = new DateTime(2025, 2, 1, 11, 28, 2, 701, DateTimeKind.Local).AddTicks(4329),
-                            FirstName = "Veronika",
-                            IsDeleted = false,
-                            LastName = "Zheleva",
-                            UserId = new Guid("2c80bd0d-c688-4ea3-ab33-9eb542b43b4c")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

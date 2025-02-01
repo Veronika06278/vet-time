@@ -10,12 +10,12 @@ namespace VetTime.Data.Models
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
-        //TODO: Add relation to client or veterinarian
-        [ForeignKey(nameof(Client))]
+        
+        //[ForeignKey(nameof(Client))]
         public Guid? ClientId { get; set; }
         public Client? Client { get; set; }
 
-        [ForeignKey(nameof(Veterinarian))]
+        //[ForeignKey(nameof(Veterinarian))]
         public Guid? VeterinarianId { get; set; }
         public Veterinarian? Veterinarian { get; set; }
     }
