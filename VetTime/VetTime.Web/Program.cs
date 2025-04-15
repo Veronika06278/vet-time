@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VetTime.Data;
 using VetTime.Data.Models;
+using VetTime.Services;
+using VetTime.Services.Interfaces;
 
 namespace VetTime.Web
 {
@@ -17,10 +19,16 @@ namespace VetTime.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<ICityService, CityService>();
+            builder.Services.AddScoped<IAddressService, AddressService>();
+            builder.Services.AddScoped<IVetService, VetService>();
+            builder.Services.AddScoped<ISpecializationService, SpecializationService>();
+
 
             var app = builder.Build();
 
