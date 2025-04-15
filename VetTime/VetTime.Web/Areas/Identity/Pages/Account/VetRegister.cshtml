@@ -1,10 +1,11 @@
 ﻿@page
-@model RegisterModel
+@model VetRegisterModel
 @{
     ViewData["Title"] = "Register";
+    
 }
 
-<h1>@ViewData["Title"] Test</h1>
+<h1>@ViewData["Title"] Veterinarian</h1>
 
 <div class="row">
     <div class="col-md-4">
@@ -14,30 +15,73 @@
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
             <div class="form-floating mb-3">
-                <input asp-for="Input.FirstName" class="form-control" aria-required="true" />
+                <input asp-for="Input.FirstName" class="form-control" autocomplete="username" aria-required="true" placeholder="" />
                 <label asp-for="Input.FirstName">First Name</label>
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.LastName" class="form-control" aria-required="true" />
+
+            <div class="form-floating mb-5">
+                <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="" />
                 <label asp-for="Input.LastName">Last Name</label>
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.District" class="form-control" aria-required="true" placeholder="" />
+                <label asp-for="Input.District">District</label>
+                <span asp-validation-for="Input.District" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Street" class="form-control" aria-required="true" placeholder="" />
+                <label asp-for="Input.Street">Street</label>
+                <span asp-validation-for="Input.Street" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Number" class="form-control" aria-required="true" placeholder="" />
+                <label asp-for="Input.Number">Number</label>
+                <span asp-validation-for="Input.Number" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group mb-3">
+                <select asp-for="Input.CityName" class="form-control custom-dropdown">
+                    <option value="" selected>Choose City</option>
+                    @foreach (string city in Model.Cities)
+                    {
+                        <option value="@city">@city</option>
+                    }
+                </select>
+                <span asp-validation-for="Input.CityName" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-floating mb-5">
+                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="" />
+                <label asp-for="Input.PhoneNumber">Phone Number</label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
             <div class="form-floating mb-3">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label asp-for="Input.Email">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+
             <div class="form-floating mb-3">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.Password">Password</label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
+
             <div class="form-floating mb-3">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+
+
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

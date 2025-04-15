@@ -1,49 +1,50 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
+using VetTime.Data;
 using VetTime.Data.Models;
+using VetTime.Services.Interfaces;
 
 namespace VetTime.Web.Areas.Identity.Pages.Account
 {
-    public class RegisterModel : PageModel
+    public class VetRegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
-        private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _dbcontext;
+        private readonly ICityService _cityService;
+        private readonly IAddressService _addressService;
+        private readonly IVetService _vetService;
 
-        public RegisterModel(
+        public VetRegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            ApplicationDbContext dbContext,
+            ICityService cityService,
+            IAddressService addressService,
+            IVetService vetService)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
-            _logger = logger;
-            _emailSender = emailSender;
+            _dbcontext = dbContext;
+            _cityService = cityService;
+            _addressService = addressService;
+            _vetService = vetService;
         }
 
         /// <summary>
@@ -65,49 +66,60 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
         /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        public List<string> Cities { get; set; } = new List<string>();
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        /// 
         public class InputModel
         {
+
             [Required]
             [StringLength(50, MinimumLength = 2)]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
-            
+
             [Required]
-            [StringLength(50, MinimumLength = 2)]
+            [MaxLength(50)]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+            [Required]
+            public string PhoneNumber { get; set; }
+
+            [Required]
+            [MaxLength(100)]
+            public string District { get; set; }
+
+            [Required]
+            [MaxLength(100)]
+            public string Street { get; set; }
+
+            [Required]
+            public int Number { get; set; }
+
+            [Required]
+            public string CityName { get; set; }
+            
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+            
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+
         }
 
 
@@ -115,45 +127,37 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            this.Cities = await GetCityNames();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                IdentityResult setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                //Tuk suzdavam ApplicationUser Entity
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    //Tuk suzdava City Entity
+                    Guid cityId = _cityService.Add(Input.CityName);
+                    //Tuk suzdavam adress Entity
+                    Guid addressId = _addressService.Add(cityId, Input.District, Input.Street, Input.Number);
+                    //Tuk suzdavam Veterinarian Entity
+                    Guid vetId = _vetService.Add(addressId, user.Id,Input.FirstName, Input.LastName, Input.Email);
 
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //TODO:return vetr to profile page
+                    return LocalRedirect(returnUrl);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
                 }
                 foreach (var error in result.Errors)
                 {
@@ -162,7 +166,9 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            OnGetAsync();
             return Page();
+            
         }
 
         private ApplicationUser CreateUser()
@@ -186,6 +192,16 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<ApplicationUser>)_userStore;
+        }
+
+        private async Task<List<string>> GetCityNames()
+        {
+            List<string> cityNames = await _dbcontext.Cities
+                .OrderBy(city => city.Name)
+                .Select(city => city.Name)
+                .ToListAsync();
+            return cityNames;
+
         }
     }
 }
