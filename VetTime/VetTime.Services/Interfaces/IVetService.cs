@@ -10,6 +10,6 @@ namespace VetTime.Services.Interfaces
     public interface IVetService
     {
         public Guid Add(Guid addressId, Guid userId, string firstName, string lastName, string email);
-        public List<VetViewModel> GetVetsInformation(string specialization, string cityName);
+        public List<VetViewModel> GetVetsInformation(string specialization, string cityName, string fullName);
     }
 }

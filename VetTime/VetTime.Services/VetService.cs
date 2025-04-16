@@ -34,17 +34,27 @@ namespace VetTime.Services
             return veterinarian.Id;
         }
 
-        public List<VetViewModel> GetVetsInformation(string specialization, string cityName)
+        public List<VetViewModel> GetVetsInformation(string specialization, string cityName, string fullName)
         {
-            return _dbContext.Veterinarians.Where(v=>
-                v.VetSpecializations.Any(vs=>vs.Specialization.Name == specialization)&&
-                v.Address.City.Name==cityName)
-                .Select(v=>new VetViewModel()
+            var vets = _dbContext.Veterinarians.Where(v =>
+            (specialization == null || v.VetSpecializations.Any(vs => vs.Specialization.Name == specialization)) &&
+            (cityName == null || v.Address.City.Name == cityName));
+
+            if (!string.IsNullOrWhiteSpace(fullName))
+            {
+                string lowered = fullName.ToLower();
+                vets = vets.Where(v => (v.FirstName + " " + v.LastName).ToLower().Contains(lowered));
+            }
+
+            return _dbContext.Veterinarians.Where(v =>
+                v.VetSpecializations.Any(vs => vs.Specialization.Name == specialization) &&
+                v.Address.City.Name == cityName)
+                .Select(v => new VetViewModel()
                 {
-                    FullName=$"{v.FirstName} {v.LastName}",
-                    //ImageUrl=v.
-                    Address=$"{v.Address.City.Name}, {v.Address.District}, {v.Address.Street} {v.Address.Number}",
-                    Rate=v.Ratings.Average(v=>v.Rate),
+                    FullName = $"{v.FirstName} {v.LastName}",
+                    ImageUrl = $"{v.ImageUrl}",
+                    Address = $"{v.Address.City.Name}, {v.Address.District}, {v.Address.Street} {v.Address.Number}",
+                    Rate = v.Ratings.Any() ? v.Ratings.Average(r => r.Rate) : 0,
                 }).ToList();
         }
     }

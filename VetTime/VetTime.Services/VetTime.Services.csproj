@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VetTime.Data\VetTime.Data.csproj" />
+    <ProjectReference Include="..\VetTime.Web.ViewModels\VetTime.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>
