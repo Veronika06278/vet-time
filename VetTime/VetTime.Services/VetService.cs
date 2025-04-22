@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -34,28 +35,104 @@ namespace VetTime.Services
             return veterinarian.Id;
         }
 
-        public List<VetViewModel> GetVetsInformation(string specialization, string cityName, string fullName)
+        public List<VetViewModel> GetVetsInformation(Guid id, string? specialization, string? cityName, string? firstName, string? lastName)
         {
-            var vets = _dbContext.Veterinarians.Where(v =>
-            (specialization == null || v.VetSpecializations.Any(vs => vs.Specialization.Name == specialization)) &&
-            (cityName == null || v.Address.City.Name == cityName));
+            
 
-            if (!string.IsNullOrWhiteSpace(fullName))
+            IQueryable<Veterinarian> vetQuery = _dbContext.Veterinarians
+                .Where(v => v.Id == id)
+                .Include(v=>v.Address)
+                .ThenInclude(a=>a.City)   //Eager Loading
+                .Include(v=>v.VetSpecializations)
+                .ThenInclude(vs=>vs.Specialization)
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (id != Guid.Empty)
             {
-                string lowered = fullName.ToLower();
-                vets = vets.Where(v => (v.FirstName + " " + v.LastName).ToLower().Contains(lowered));
+                vetQuery = vetQuery.Where(v => v.Id == id);
             }
 
-            return _dbContext.Veterinarians.Where(v =>
-                v.VetSpecializations.Any(vs => vs.Specialization.Name == specialization) &&
-                v.Address.City.Name == cityName)
-                .Select(v => new VetViewModel()
-                {
-                    FullName = $"{v.FirstName} {v.LastName}",
-                    ImageUrl = $"{v.ImageUrl}",
-                    Address = $"{v.Address.City.Name}, {v.Address.District}, {v.Address.Street} {v.Address.Number}",
-                    Rate = v.Ratings.Any() ? v.Ratings.Average(r => r.Rate) : 0,
-                }).ToList();
+            if (!string.IsNullOrEmpty(specialization))
+            {
+               vetQuery = vetQuery.Where(v => v.VetSpecializations.Any(vs => vs.Specialization.Name == specialization));
+                
+            }
+            
+            if (!string.IsNullOrEmpty(cityName))
+            {
+               vetQuery = vetQuery.Where(v=>v.Address.City.Name == cityName);
+                
+            }
+            
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                string wildCard = $"%{firstName}%";
+               vetQuery = vetQuery.Where(v => EF.Functions.Like(v.FirstName, wildCard));
+                
+            }
+            
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                string wildCard = $"%{lastName}%";
+               vetQuery = vetQuery.Where(v => EF.Functions.Like(v.LastName, wildCard));
+                
+            }
+
+            List <VetViewModel> vetResults = vetQuery.Select(v=> new VetViewModel
+            {
+                Id = v.Id,
+                FirstName= v.FirstName,
+                LastName= v.LastName,
+                ImageUrl = v.ImageUrl,
+                Address = $"{v.Address.City.Name}, {v.Address.District}, {v.Address.Street} {v.Address.Number}",
+                Rate = v.Ratings.Any() ? v.Ratings.Average(r => r.Rate) : 0,
+                Specializations=v.VetSpecializations.Select(vs=>vs.Specialization.Name).ToList()
+            }).OrderByDescending(v => v.Rate).ToList();
+
+            return vetResults;
+
         }
+
+        public VetDetailsViewModel GetVetDetails(Guid id)
+        {
+            var vetQuery = _dbContext.Veterinarians
+                .Where(v => v.Id == id)
+                .Include(v => v.Address)
+                .ThenInclude(a => a.City)
+                .Include(v => v.VetSpecializations)
+                .ThenInclude(vs => vs.Specialization)
+                .Include(v => v.Ratings)
+                .AsNoTracking()
+                .FirstOrDefault();
+
+            if (vetQuery == null)
+                return null!;
+
+            var slots = _dbContext.Appointments
+                .Where(a => a.VetId == id && !a.HasVisited && !a.IsDeleted && a.AppointmentTime > DateTime.Now)
+                .OrderBy(a => a.AppointmentTime)
+                .Select(a => new AppointmentSlotViewModel
+                {
+                    Id = a.Id,
+                    AppointmentTime = a.AppointmentTime,
+                    HasVisited = a.HasVisited,
+                    AppointmentType = a.AppointmentType.ToString()
+                })
+                .ToList();
+
+            return new VetDetailsViewModel
+            {
+                Id = vetQuery.Id,
+                FirstName = vetQuery.FirstName,
+                LastName = vetQuery.LastName,
+                ImageUrl = vetQuery.ImageUrl,
+                Address = $"{vetQuery.Address.City.Name}, {vetQuery.Address.District}, {vetQuery.Address.Street} {vetQuery.Address.Number}",
+                Rate = vetQuery.Ratings.Any() ? vetQuery.Ratings.Average(r => r.Rate) : 0,
+                Specializations = vetQuery.VetSpecializations .Select(vs => vs.Specialization.Name) .ToList(),
+                AvailableSlots = slots
+            };
+        }
+
     }
 }

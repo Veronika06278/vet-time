@@ -7,40 +7,22 @@ using System.Threading.Tasks;
 
 namespace VetTime.Web.ViewModels.Home
 {
-    public class HomeViewModel : IValidatableObject
+    public class HomeViewModel
     {
-        //public string CityName { get; set; }
-
-        //public List<string> Cities { get; set; } = new List<string>();
-
-        //public string Specialization { get; set; }
-        //public List<string> Specializations { get; set; } = new List<string>();
-
-        //public List<VetViewModel> Vets { get; set; } = new List<VetViewModel>();
-
-        public string CityName { get; set; }
+        public Guid Id { get; set; }
+        public string? CityName { get; set; }
 
         public List<string> Cities { get; set; } = new List<string>();
 
-        public string Specialization { get; set; }
+        public string? Specialization { get; set; }
 
         public List<string> Specializations { get; set; } = new List<string>();
 
-        public string VetFullName { get; set; } // Две имена на ветеринар
+        public string? VetFirstName { get; set; } 
+        public string? VetLastName { get; set; } 
 
         public List<VetViewModel> Vets { get; set; } = new List<VetViewModel>();
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (string.IsNullOrWhiteSpace(CityName)
-                && string.IsNullOrWhiteSpace(Specialization)
-                && string.IsNullOrWhiteSpace(VetFullName))
-            {
-                yield return new ValidationResult(
-                    "Please fill in at least one of the fields: city, specialization, or veterinarian name.",
-                    new[] { nameof(CityName), nameof(Specialization), nameof(VetFullName) }
-                );
-            }
-        }
+        
     }
 }
