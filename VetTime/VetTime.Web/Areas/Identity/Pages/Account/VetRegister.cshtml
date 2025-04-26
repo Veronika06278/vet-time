@@ -1,8 +1,9 @@
 ﻿@page
+@using VetTime.Web.ViewModels.Home
 @model VetRegisterModel
 @{
     ViewData["Title"] = "Register";
-    
+
 }
 
 <h1>@ViewData["Title"] Veterinarian</h1>
@@ -56,6 +57,28 @@
                 <span asp-validation-for="Input.CityName" class="text-danger"></span>
             </div>
 
+            <div class="form-check">
+                <input asp-for="Input.IsCheckedDomesticAnimals" class="form-check-input" type="checkbox" value="true">
+                <label asp-for="Input.IsCheckedDomesticAnimals" class="form-check-label" for="flexCheckDefault">
+                    Domestic Animals
+                </label>
+                
+            </div>
+
+            <div class="form-check">
+                <input asp-for="Input.IsCheckedExoticAnimals" class="form-check-input" type="checkbox" value="true">
+                <label asp-for="Input.IsCheckedExoticAnimals" class="form-check-label" for="flexCheckDefault">
+                    Exotic Animals
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="Input.IsCheckedFarmAnimals" class="form-check-input" type="checkbox" value="true">
+                <label asp-for="Input.IsCheckedFarmAnimals" class="form-check-label" for="flexCheckDefault">
+                    Farm Animals
+                </label>
+                <span asp-validation-for="Input.IsCheckedDomesticAnimals" class="text-danger"></span>
+            </div>
 
             <div class="form-floating mb-5">
                 <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="" />

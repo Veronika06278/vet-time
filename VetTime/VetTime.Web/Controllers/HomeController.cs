@@ -51,7 +51,7 @@ namespace VetTime.Web.Controllers
                 model.Cities = _cityService.GetAllCityNames();
                 return View(model);
             }
-            model.Vets = _vetService.GetVetsInformation(model.Id, model.Specialization, model.CityName, model.VetFirstName, model.VetLastName);
+            model.Vets = _vetService.GetVetsInformation(/*model.Id, */model.Specialization, model.CityName, model.VetFirstName, model.VetLastName);
             model.Cities = _cityService.GetAllCityNames();
             model.Specializations = _specializationService.GetAllSpecializations();
             return View(model);
@@ -71,7 +71,7 @@ namespace VetTime.Web.Controllers
             model.Cities = _cityService.GetAllCityNames();
             model.Specializations = _specializationService.GetAllSpecializations();
             model.Vets = _vetService
-                .GetVetsInformation(model.Id, model.Specialization, model.CityName, model.VetFirstName, model.VetLastName);
+                .GetVetsInformation(/*model.Id, */model.Specialization, model.CityName, model.VetFirstName, model.VetLastName);
 
             return View(model);
         }
@@ -91,14 +91,43 @@ namespace VetTime.Web.Controllers
         {
             var appointment = _dbContext.Appointments
                 .FirstOrDefault(a => a.Id == appointmentId);
-
-            if (appointment == null || appointment.HasVisited || appointment.IsDeleted)
+            if (appointment == null)
                 return NotFound();
 
             appointment.HasVisited = true;
             _dbContext.SaveChanges();
-
             return RedirectToAction(nameof(Details), new { id = appointment.VetId });
+        }
+        
+
+        [HttpGet]
+        public IActionResult SelectSlot(Guid id)
+        {
+            // id is the veterinarian's Id
+            var vetDetails = _vetService.GetVetDetails(id);
+            if (vetDetails == null) return NotFound();
+
+            var model = new CreateAppointmentViewModel
+            {
+                VetId = id,
+                AvailableSlots = vetDetails.AvailableSlots
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmSlot(CreateAppointmentViewModel model)
+        {
+            // model.SelectedSlotId holds the appointment slot to book
+            // Mark booked in database
+            var slot = _dbContext.Appointments.Find(model.SelectedSlotId);
+            if (slot == null) return NotFound();
+
+            slot.HasVisited = true;
+            _dbContext.SaveChanges();
+
+            // Redirect back to details of the vet
+            return RedirectToAction("Details", new { id = model.VetId });
         }
 
 

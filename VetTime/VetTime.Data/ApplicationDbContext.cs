@@ -23,35 +23,26 @@ namespace VetTime.Data
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Breed> Breeds { get; set; }
         public DbSet<Animal> Animals { get; set; }
+        public DbSet<Specialization> Specializations { get; set; }
+        public DbSet<VetSpecialization> VetSpecializations { get; set; }
 
         
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Rating>()
-                .HasKey(r => new
-                {
-                    r.VetId,
-                    r.ClientId
-                });
-
-            builder.Entity<Appointment>()
-                .HasOne(a => a.Client)
-                .WithMany(c => c.Appointments)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Veterinarian>()
-               .HasOne(v => v.User)
-               .WithOne(u => u.Veterinarian)
-               .OnDelete(DeleteBehavior.Restrict);
-
+            //TODO: Create new migration
+            
+            builder.ApplyConfiguration<Rating>(new RatingConfiguration());           
+            builder.ApplyConfiguration<Appointment>(new AppointmentConfiguration());
             //seeding data
             builder.ApplyConfiguration<ApplicationUser>(new ApplicationUserConfiguration());
             builder.ApplyConfiguration<Client>(new ClientConfiguration());
             builder.ApplyConfiguration<City>(new CityConfiguration());
             builder.ApplyConfiguration<Address>(new AddressConfuration());
             builder.ApplyConfiguration<Veterinarian>(new VeterinarianConfiguration());
+            builder.ApplyConfiguration<Specialization>(new SpecializationConfiguration());
+            builder.ApplyConfiguration<VetSpecialization>(new VetSpecializationConfiguration());
         }
     }
 }

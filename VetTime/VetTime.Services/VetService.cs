@@ -35,23 +35,17 @@ namespace VetTime.Services
             return veterinarian.Id;
         }
 
-        public List<VetViewModel> GetVetsInformation(Guid id, string? specialization, string? cityName, string? firstName, string? lastName)
+        public List<VetViewModel> GetVetsInformation(string? specialization, string? cityName, string? firstName, string? lastName)
         {
             
 
             IQueryable<Veterinarian> vetQuery = _dbContext.Veterinarians
-                .Where(v => v.Id == id)
                 .Include(v=>v.Address)
                 .ThenInclude(a=>a.City)   //Eager Loading
                 .Include(v=>v.VetSpecializations)
                 .ThenInclude(vs=>vs.Specialization)
                 .AsNoTracking()
                 .AsQueryable();
-
-            if (id != Guid.Empty)
-            {
-                vetQuery = vetQuery.Where(v => v.Id == id);
-            }
 
             if (!string.IsNullOrEmpty(specialization))
             {
@@ -87,7 +81,11 @@ namespace VetTime.Services
                 ImageUrl = v.ImageUrl,
                 Address = $"{v.Address.City.Name}, {v.Address.District}, {v.Address.Street} {v.Address.Number}",
                 Rate = v.Ratings.Any() ? v.Ratings.Average(r => r.Rate) : 0,
-                Specializations=v.VetSpecializations.Select(vs=>vs.Specialization.Name).ToList()
+                Specializations=v.VetSpecializations.Select(vs=> new SpecializationViewModel
+                {
+                    Id= vs.Specialization.Id,
+                    Name=vs.Specialization.Name,
+                }).ToList()
             }).OrderByDescending(v => v.Rate).ToList();
 
             return vetResults;
@@ -107,7 +105,9 @@ namespace VetTime.Services
                 .FirstOrDefault();
 
             if (vetQuery == null)
+            {
                 return null!;
+            }
 
             var slots = _dbContext.Appointments
                 .Where(a => a.VetId == id && !a.HasVisited && !a.IsDeleted && a.AppointmentTime > DateTime.Now)

@@ -6,21 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VetTime.Data.Models;
-using VetTime.Data.Seeding;
 
 namespace VetTime.Data.Configurations
 {
-    public class VetSpecializationConfiguration : IEntityTypeConfiguration<VetSpecialization>
+    public class RatingConfiguration : IEntityTypeConfiguration<Rating>
     {
-        public void Configure(EntityTypeBuilder<VetSpecialization> builder)
+        public void Configure(EntityTypeBuilder<Rating> builder)
         {
             builder
-                .HasKey(vs => new
+                .HasKey(r => new
                 {
-                    vs.VetId,
-                    vs.Id
+                    r.VetId,
+                    r.ClientId
                 });
-            builder.HasData(VetSpecializationSeeder.GenerateVetSpecialization());
         }
     }
 }

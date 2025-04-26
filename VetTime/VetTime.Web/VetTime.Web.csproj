@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VetTime.Data\VetTime.Data.csproj" />
+    <ProjectReference Include="..\VetTime.Services\VetTime.Services.csproj" />
     <ProjectReference Include="..\VetTime.Web.ViewModels\VetTime.Web.ViewModels.csproj" />
   </ItemGroup>
 

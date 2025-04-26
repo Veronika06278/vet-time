@@ -11,6 +11,7 @@ namespace VetTime.Data.Models
             Id= Guid.NewGuid();
             Ratings = new HashSet<Rating>();
             Appointments = new HashSet<Appointment>();
+            VetSpecializations=new HashSet<VetSpecialization>();
             CreatedOn = DateTime.Now;
             IsDeleted = false;
         }
@@ -27,6 +28,8 @@ namespace VetTime.Data.Models
         [MaxLength(50)]
         public string LastName { get; set; } = null!;
 
+        public string? ImageUrl { get; set; }
+
         [ForeignKey(nameof(Address))]
         [Required]
         public Guid AddressId { get; set; }
@@ -40,6 +43,8 @@ namespace VetTime.Data.Models
         public ICollection<Rating> Ratings { get; set; }
 
         public ICollection<Appointment> Appointments { get; set; }
+
+        public ICollection<VetSpecialization> VetSpecializations { get; set; }
 
         public DateTime CreatedOn { get; init; }
         public DateTime? UpdatedAt { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VetTime.Web.ViewModels.Home
 {
-    public class VetViewModel
+    public class VetDetailsViewModel
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }
@@ -14,6 +14,7 @@ namespace VetTime.Web.ViewModels.Home
         public string? ImageUrl { get; set; }
         public string Address { get; set; }
         public double Rate { get; set; }
-        public List<SpecializationViewModel> Specializations { get; set; } = new List<SpecializationViewModel>();
+        public List<string> Specializations { get; set; } = new List<string>();
+        public List<AppointmentSlotViewModel> AvailableSlots { get; set; } = new();
     }
 }

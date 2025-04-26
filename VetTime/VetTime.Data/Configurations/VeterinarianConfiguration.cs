@@ -14,6 +14,11 @@ namespace VetTime.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Veterinarian> builder)
         {
+            builder
+               .HasOne(v => v.User)
+               .WithOne(u => u.Veterinarian)
+               .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasData(VeterinarianSeeder.GenerateVeterinarians());
         }
     }

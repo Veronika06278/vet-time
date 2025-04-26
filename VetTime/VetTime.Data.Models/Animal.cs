@@ -24,7 +24,11 @@ namespace VetTime.Data.Models
         [Required]
         public string Name { get; set; } = null!;
         public string? PhotoURL { get; set; }
-        public AnimalCategory AnimalCategory { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(Specialization))]
+        public int SpecializationId {  get; set; }
+        public Specialization Specialization { get; set; }
 
         [Required]
         [ForeignKey(nameof(Client))]

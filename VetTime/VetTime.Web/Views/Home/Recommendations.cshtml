@@ -1,4 +1,5 @@
-﻿@model VetTime.Web.ViewModels.Home.HomeViewModel
+﻿@using VetTime.Web.ViewModels.Home
+@model VetTime.Web.ViewModels.Home.HomeViewModel
 
 @{
     ViewData["Title"] = "Recommended Vets";
@@ -15,11 +16,11 @@
         <div class="row g-3 align-items-end">
             <div class="col-md-4">
                 <label asp-for="VetFirstName" class="form-label">Veterinarian Full Name</label>
-                <input asp-for="VetFirstName" class="form-control" placeholder="e.g. John Doe" />
+                <input asp-for="VetFirstName" class="form-control" placeholder="" />
             </div>
             <div class="col-md-4">
                 <label asp-for="VetLastName" class="form-label">Veterinarian Full Name</label>
-                <input asp-for="VetLastName" class="form-control" placeholder="e.g. John Doe" />
+                <input asp-for="VetLastName" class="form-control" placeholder="" />
             </div>
 
             <div class="col-md-4">
@@ -37,9 +38,9 @@
                 <label asp-for="Specialization" class="form-label">Specialization</label>
                 <select asp-for="Specialization" class="form-control">
                     <option value="">-- Choose Specialization --</option>
-                    @foreach (var specialization in Model.Specializations)
+                    @foreach (SpecializationViewModel specialization in Model.Specializations)
                     {
-                        <option value="@specialization">@specialization</option>
+                        <option value="@specialization.Name">@specialization.Name</option>
                     }
                 </select>
             </div>
@@ -65,9 +66,9 @@
                                 <strong>Rating:</strong> @vet.Rate<br />
                                 <strong>Address:</strong> @vet.Address<br />
                                 <strong>Specializations:</strong>
-                                 @foreach (var specialization in vet.Specializations)
+                                 @foreach (SpecializationViewModel specialization in vet.Specializations)
                                 {
-                                    <p>@specialization</p>
+                                    <p>@specialization.Name</p>
                                 }
                             </p>
                             <div class="mt-auto text-end">

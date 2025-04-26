@@ -1,0 +1,42 @@
+﻿@model VetTime.Web.ViewModels.Home.CreateAppointmentViewModel
+
+@{
+    ViewData["Title"] = "Select Appointment";
+}
+<div class="container mt-5">
+    <h2 class="mb-4">Select Appointment Slot</h2>
+    <form asp-action="ConfirmSlot" method="post">
+        <input type="hidden" asp-for="VetId" />
+        <div class="row">
+            @foreach (var slot in Model.AvailableSlots)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card appointment-card" data-slot-id="@slot.Id">
+                        <div class="card-body">
+                            <h5 class="card-title">@slot.AppointmentTime.ToString("dd MMM yyyy HH:mm")</h5>
+                            <p class="card-text">@slot.AppointmentType</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <input type="hidden" asp-for="SelectedSlotId" id="SelectedSlotId" />
+        <button type="submit" class="btn btn-success" disabled id="confirmButton">Confirm Appointment</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.appointment-card').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.appointment-card').forEach(c => c.classList.remove('border-primary'));
+                    card.classList.add('border-primary');
+                    var slotId = card.getAttribute('data-slot-id');
+                    document.getElementById('SelectedSlotId').value = slotId;
+                    document.getElementById('confirmButton').disabled = false;
+                });
+            });
+        });
+    </script>
+}

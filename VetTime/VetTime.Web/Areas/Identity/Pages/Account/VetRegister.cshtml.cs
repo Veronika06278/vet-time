@@ -14,6 +14,7 @@ using System.Text.Encodings.Web;
 using VetTime.Data;
 using VetTime.Data.Models;
 using VetTime.Services.Interfaces;
+using VetTime.Web.ViewModels.Home;
 
 namespace VetTime.Web.Areas.Identity.Pages.Account
 {
@@ -27,6 +28,7 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
         private readonly ICityService _cityService;
         private readonly IAddressService _addressService;
         private readonly IVetService _vetService;
+        private readonly ISpecializationService _specializationService;
 
         public VetRegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -35,7 +37,8 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
             ApplicationDbContext dbContext,
             ICityService cityService,
             IAddressService addressService,
-            IVetService vetService)
+            IVetService vetService,
+            ISpecializationService specializationService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +48,7 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
             _cityService = cityService;
             _addressService = addressService;
             _vetService = vetService;
+            _specializationService = specializationService;
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public List<string> Cities { get; set; } = new List<string>();
-
+        
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -102,7 +106,13 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
 
             [Required]
             public string CityName { get; set; }
-            
+
+
+            public bool IsCheckedDomesticAnimals { get; set; }
+            public bool IsCheckedExoticAnimals { get; set; }
+            public bool IsCheckedFarmAnimals { get; set; }
+
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -128,12 +138,22 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             this.Cities = await GetCityNames();
+            
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (Input.IsCheckedExoticAnimals == false &&
+               Input.IsCheckedDomesticAnimals == false &&
+               Input.IsCheckedFarmAnimals == false)
+            {
+                ModelState.AddModelError("Input.IsCheckedExoticAnimals", "At least one specialization must be checked");
+                ModelState.AddModelError("Input.IsCheckedDomesticAnimals", "At least one specialization must be checked");
+                ModelState.AddModelError("Input.IsCheckedFarmAnimals", "At least one specialization must be checked");
+            }
 
             if (ModelState.IsValid)
             {
@@ -144,6 +164,7 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
                 IdentityResult setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 //Tuk suzdavam ApplicationUser Entity
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                
 
                 if (result.Succeeded)
                 {
@@ -153,6 +174,25 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
                     Guid addressId = _addressService.Add(cityId, Input.District, Input.Street, Input.Number);
                     //Tuk suzdavam Veterinarian Entity
                     Guid vetId = _vetService.Add(addressId, user.Id,Input.FirstName, Input.LastName, Input.Email);
+
+                    
+                    
+                    if (Input.IsCheckedDomesticAnimals == true)
+                    {
+                        this.AddVetSpecialization("Domestic Animals", vetId);
+                    }
+
+                    if (Input.IsCheckedExoticAnimals == true)
+                    {
+                        this.AddVetSpecialization("Exotic Animals", vetId);
+                    }
+
+                    if (Input.IsCheckedFarmAnimals == true)
+                    {
+                        this.AddVetSpecialization("Farm Animals", vetId);
+                    }
+
+                    
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     //TODO:return vetr to profile page
@@ -202,6 +242,16 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
                 .ToListAsync();
             return cityNames;
 
+        }
+        private void AddVetSpecialization(string specializationName, Guid vetId)
+        {
+            List<SpecializationViewModel> specializations = _specializationService.GetAllSpecializations();
+            
+            SpecializationViewModel spec = specializations.Where(s => s.Name == specializationName).FirstOrDefault();
+            if (spec != null)
+            {
+                _specializationService.AddVetSpecialization(vetId, spec.Id);
+            }
         }
     }
 }

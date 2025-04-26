@@ -16,7 +16,7 @@ namespace VetTime.Web.ViewModels.Home
 
         public string? Specialization { get; set; }
 
-        public List<string> Specializations { get; set; } = new List<string>();
+        public List<SpecializationViewModel> Specializations { get; set; } = new List<SpecializationViewModel>();
 
         public string? VetFirstName { get; set; } 
         public string? VetLastName { get; set; } 
