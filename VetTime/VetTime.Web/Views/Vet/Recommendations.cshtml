@@ -12,14 +12,14 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <!-- 🔍 Filter Form -->
-    <form asp-controller="Home" asp-action="Recommendations" method="post" class="mb-5">
+    <form asp-controller="Vet" asp-action="Recommendations" method="post" class="mb-5">
         <div class="row g-3 align-items-end">
             <div class="col-md-4">
-                <label asp-for="VetFirstName" class="form-label">Veterinarian Full Name</label>
+                <label asp-for="VetFirstName" class="form-label">Veterinarian First Name</label>
                 <input asp-for="VetFirstName" class="form-control" placeholder="" />
             </div>
             <div class="col-md-4">
-                <label asp-for="VetLastName" class="form-label">Veterinarian Full Name</label>
+                <label asp-for="VetLastName" class="form-label">Veterinarian Last Name</label>
                 <input asp-for="VetLastName" class="form-control" placeholder="" />
             </div>
 
@@ -72,7 +72,7 @@
                                 }
                             </p>
                             <div class="mt-auto text-end">
-                                <a asp-controller="Home" asp-action="Details" asp-route-id="@vet.Id" class="btn btn-sm btn-outline-primary">View Details</a>
+                                <a asp-controller="Vet" asp-action="Details" asp-route-id="@vet.Id" class="btn btn-sm btn-outline-primary">Create an appointment</a>
                             </div>
                         </div>
                     </div>
