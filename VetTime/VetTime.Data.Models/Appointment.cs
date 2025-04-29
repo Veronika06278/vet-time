@@ -38,10 +38,10 @@ namespace VetTime.Data.Models
 
         public bool HasVisited { get; set; }
 
-        [Required]
+        
         [ForeignKey(nameof(Animal))]
-        public Guid AnimalId { get; set; }
-        public Animal Animal { get; set; } = null!;
+        public Guid? AnimalId { get; set; }
+        public Animal? Animal { get; set; } 
 
         public DateTime CreatedOn { get; init; }
         public DateTime? UpdatedAt { get; set; }

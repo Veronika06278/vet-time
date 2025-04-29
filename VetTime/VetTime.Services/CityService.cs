@@ -38,12 +38,12 @@ namespace VetTime.Services
             return city.Id;
         }
 
-        public List<string> GetAllCityNames()
+        public async Task<List<string>> GetAllCityNames()
         {
-            return _dbContext.Cities
+            return await _dbContext.Cities
                            .Select(c => c.Name)
                            .OrderBy(name => name)
-                           .ToList();
+                           .ToListAsync();
             
         }
         

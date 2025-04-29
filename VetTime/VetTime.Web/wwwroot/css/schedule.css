@@ -1,0 +1,51 @@
+﻿
+.day-header {
+    cursor: pointer;
+    padding: 0.5rem;
+    text-align: center;
+    user-select: none;
+    transition: background .2s;
+}
+
+    .day-header:hover {
+        background: #f8f9fa;
+    }
+
+
+.slot-day {
+    margin-bottom: 1rem;
+}
+
+
+.slot {
+    margin: 0.25rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform .1s, background .2s;
+    display: inline-block;
+}
+
+    .slot.free {
+        background-color: #cce5ff; 
+        color: #004085; 
+    }
+
+        .slot.free:hover {
+            transform: scale(1.05);
+        }
+
+    .slot.booked {
+        background-color: #e2e3e5; 
+        color: #6c757d; 
+        cursor: not-allowed;
+    }
+
+    
+    .slot.selected {
+        background-color: #004085; 
+        color: #fff; 
+        border: 2px solid #002752;
+    }

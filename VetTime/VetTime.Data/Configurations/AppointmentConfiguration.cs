@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VetTime.Data.Models;
+using VetTime.Data.Seeding;
 
 namespace VetTime.Data.Configurations
 {
@@ -17,6 +18,8 @@ namespace VetTime.Data.Configurations
                 .HasOne(a => a.Client)
                 .WithMany(c => c.Appointments)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasData(AppointmentSeeder.GenerateAppointments());
         }
+
     }
 }

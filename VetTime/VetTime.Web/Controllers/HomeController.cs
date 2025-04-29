@@ -31,11 +31,11 @@ namespace VetTime.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var viewModel = new HomeViewModel
             {
-                Cities = _cityService.GetAllCityNames(),
+                Cities = await _cityService.GetAllCityNames(),
                 Specializations = _specializationService.GetAllSpecializations()
             };
 
@@ -43,16 +43,16 @@ namespace VetTime.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(HomeViewModel model)
+        public async Task<IActionResult> Index(HomeViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 model.Specializations = _specializationService.GetAllSpecializations();
-                model.Cities = _cityService.GetAllCityNames();
+                model.Cities = await _cityService.GetAllCityNames();
                 return View(model);
             }
             model.Vets = _vetService.GetVetsInformation(/*model.Id, */model.Specialization, model.CityName, model.VetFirstName, model.VetLastName);
-            model.Cities = _cityService.GetAllCityNames();
+            model.Cities = await _cityService.GetAllCityNames();
             model.Specializations = _specializationService.GetAllSpecializations();
             return View(model);
         }

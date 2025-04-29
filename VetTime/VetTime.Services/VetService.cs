@@ -10,6 +10,7 @@ using VetTime.Data;
 using VetTime.Data.Models;
 using VetTime.Services.Interfaces;
 using VetTime.Web.ViewModels.Home;
+using VetTime.Web.ViewModels.Vet;
 
 namespace VetTime.Services
 {
@@ -92,9 +93,9 @@ namespace VetTime.Services
 
         }
 
-        public VetDetailsViewModel GetVetDetails(Guid id)
+        public async Task<VetDetailsViewModel> GetVetDetails(Guid id)
         {
-            var vetQuery = _dbContext.Veterinarians
+            var vetQuery = await _dbContext.Veterinarians
                 .Where(v => v.Id == id)
                 .Include(v => v.Address)
                 .ThenInclude(a => a.City)
@@ -102,21 +103,23 @@ namespace VetTime.Services
                 .ThenInclude(vs => vs.Specialization)
                 .Include(v => v.Ratings)
                 .AsNoTracking()
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (vetQuery == null)
             {
                 return null!;
             }
 
+            DateTime today = DateTime.Now.Date;
+            DateTime startDateAndHour = today.AddDays(1).AddHours(9);
+            DateTime endDateAndHour = today.AddDays(6).AddHours(17);
             var slots = _dbContext.Appointments
-                .Where(a => a.VetId == id && !a.HasVisited && !a.IsDeleted && a.AppointmentTime > DateTime.Now)
+                .Where(a => a.VetId == id && !a.IsDeleted && a.AppointmentTime >= startDateAndHour && a.AppointmentTime<=endDateAndHour)
                 .OrderBy(a => a.AppointmentTime)
                 .Select(a => new AppointmentSlotViewModel
                 {
                     Id = a.Id,
                     AppointmentTime = a.AppointmentTime,
-                    HasVisited = a.HasVisited,
                     AppointmentType = a.AppointmentType.ToString()
                 })
                 .ToList();
@@ -130,7 +133,7 @@ namespace VetTime.Services
                 Address = $"{vetQuery.Address.City.Name}, {vetQuery.Address.District}, {vetQuery.Address.Street} {vetQuery.Address.Number}",
                 Rate = vetQuery.Ratings.Any() ? vetQuery.Ratings.Average(r => r.Rate) : 0,
                 Specializations = vetQuery.VetSpecializations .Select(vs => vs.Specialization.Name) .ToList(),
-                AvailableSlots = slots
+                BookedSlots = slots
             };
         }
 

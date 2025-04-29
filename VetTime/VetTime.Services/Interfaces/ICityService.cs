@@ -10,6 +10,6 @@ namespace VetTime.Services.Interfaces
     public interface ICityService
     {
         public Guid Add(string cityName);
-        public List<string> GetAllCityNames();
+        public Task<List<string>> GetAllCityNames();
     }
 }

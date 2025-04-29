@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VetTime.Web.ViewModels.Home
+namespace VetTime.Web.ViewModels.Vet
 {
     public class AppointmentSlotViewModel
     {

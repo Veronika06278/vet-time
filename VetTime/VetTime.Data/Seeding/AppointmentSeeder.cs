@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VetTime.Data.Models;
+using VetTime.Data.Models.Enums;
 
 namespace VetTime.Data.Seeding
 {
@@ -18,7 +19,10 @@ namespace VetTime.Data.Seeding
                 Id=new Guid("30ccc388-9956-4f37-bdea-c9c5e466c78c"),
                 ClientId=new Guid("b3e77258-dd68-4b24-ae5a-98968d7ec371"),
                 VetId=new Guid("e1da8c11-27f5-4a8b-8c22-abec84d1995b"),
-                AnimalId=new Guid("dff7696c-e08c-4273-b506-9d8b9a3e96db")
+                AppointmentType= AppointmentType.PrimaryExamination,
+                AppointmentTime = new DateTime(2025,4,28,13,0,0),
+                CreatedOn=new DateTime(2025,4,27,13,0,0),
+                IsDeleted=false
             });
             return values;
         }
