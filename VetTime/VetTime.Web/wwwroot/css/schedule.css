@@ -11,6 +11,12 @@
         background: #f8f9fa;
     }
 
+    .day-header.selected {
+        background-color: #dee2e6; /* по-тъмен светлосив фон */
+        color: #495057; /* по-тъмен текст */
+        border-radius: 50%; /* кръг */
+        transition: background .2s, color .2s, border-radius .2s;
+    }
 
 .slot-day {
     margin-bottom: 1rem;
@@ -29,8 +35,8 @@
 }
 
     .slot.free {
-        background-color: #cce5ff; 
-        color: #004085; 
+        background-color: #cce5ff;
+        color: #004085;
     }
 
         .slot.free:hover {
@@ -38,14 +44,30 @@
         }
 
     .slot.booked {
-        background-color: #e2e3e5; 
-        color: #6c757d; 
+        background-color: #e2e3e5;
+        color: #6c757d;
         cursor: not-allowed;
     }
 
-    
+
     .slot.selected {
-        background-color: #004085; 
-        color: #fff; 
+        background-color: #004085;
+        color: #fff;
         border: 2px solid #002752;
     }
+
+    .slot.selected {
+        background-color: #003766; /* много тъмен син фон */
+        color: #fff; /* бял текст */
+        border: 2px solid #002752; /* тъмен син бордер */
+        border-radius: 0.25rem; /* леко заобляне */
+        transform: none; /* да не се скалира при hover */
+        cursor: default; /* неактивен курсор */
+        transition: background .2s, color .2s, border .2s;
+    }
+
+
+        /* за да не се скалира при hover */
+        .slot.selected:hover {
+            transform: none;
+        }

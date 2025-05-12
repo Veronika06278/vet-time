@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VetTime.Data;
 
@@ -11,9 +12,11 @@ using VetTime.Data;
 namespace VetTime.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250504083454_CreatedAdminSeeding")]
+    partial class CreatedAdminSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,7 +211,7 @@ namespace VetTime.Data.Migrations
                         {
                             Id = new Guid("4de1b74b-9a84-4b00-a70f-178b7956ef32"),
                             CityId = new Guid("e1e9bc98-8d9a-42a9-b07b-9523ff504ab1"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4602),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1618),
                             District = "Lozenets",
                             IsDeleted = false,
                             Number = 16,
@@ -343,13 +346,13 @@ namespace VetTime.Data.Migrations
                         {
                             Id = new Guid("09d568fa-092d-4fce-968b-37eedbdfdbba"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "67d41805-b5da-48df-ae0a-8c2cdb6a28e3",
+                            ConcurrencyStamp = "96eea271-6799-4aef-9fa0-f5f74d218560",
                             Email = "client@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "CLIENT@GMAIL.COM",
                             NormalizedUserName = "CLIENT@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAELphp0JchOj6L22BNQSWZ7n0vjvl5M7SyLtlvo3BMRxpeJvPWZyA8qYRFtwwMCK0gQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPl7nL6GPQneQA0YDoByLlXs0b5bUvNL+njxpbmpawNhH7Kg2GGaKSV8fnkI96aACg==",
                             PhoneNumber = "0886578436",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "5b3e881c-bfe4-43f2-a4d8-e2d28af0293a",
@@ -360,13 +363,13 @@ namespace VetTime.Data.Migrations
                         {
                             Id = new Guid("2c80bd0d-c688-4ea3-ab33-9eb542b43b4c"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "94dd74c5-cd3c-4c18-8f5d-1767826b39cc",
+                            ConcurrencyStamp = "f7b80359-b1e6-45bd-a36d-6e0c540b5a55",
                             Email = "veterinar@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "VETERINAR@GMAIL.COM",
                             NormalizedUserName = "VETERINAR@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOfyc//AErugC0HF5/ZzdazNbSU+6TpNgba5+DqQ+2EJZopsIQto1H3KMalw+tTcxA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFzpZxJUFr84CAa768XrHGeYFjoLg2CFMOn78VqWmAjySdNU2oYfDdZbOECOHXhz3w==",
                             PhoneNumber = "0887564962",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "1e860808-5c39-42fd-ba4a-e71f2286a26c",
@@ -377,13 +380,13 @@ namespace VetTime.Data.Migrations
                         {
                             Id = new Guid("e7cab530-e2f0-418d-9577-dd1b6710c05e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "750d9093-ecf5-439b-bdd4-6f02db0562a7",
+                            ConcurrencyStamp = "3ab46a61-5cd2-496e-9542-6a0f15aa2f1b",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@ADMIN.COM",
+                            NormalizedEmail = "VETERINAR@GMAIL.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAhGOXhXQhoEFwRQLIlcz1pCRIUMXyI5cTysyuReOTMHxi2jcQRHZlAxDWMgClucGA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGb+DBiRgRNEY16mEeiUTw/mZvvle/ykxc5Ewsv2J/sc/7BaY5pKdmjo0llXozDONA==",
                             PhoneNumber = "0887698491",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "92120f9e-6bfb-4801-b8d9-d424621f19c7",
@@ -528,189 +531,189 @@ namespace VetTime.Data.Migrations
                         new
                         {
                             Id = new Guid("e1e9bc98-8d9a-42a9-b07b-9523ff504ab1"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4054),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(315),
                             IsDeleted = false,
                             Name = "Sofia"
                         },
                         new
                         {
                             Id = new Guid("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4074),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(327),
                             IsDeleted = false,
                             Name = "Plovdiv"
                         },
                         new
                         {
                             Id = new Guid("2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4079),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(333),
                             IsDeleted = false,
                             Name = "Varna"
                         },
                         new
                         {
                             Id = new Guid("3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4084),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(337),
                             IsDeleted = false,
                             Name = "Burgas"
                         },
                         new
                         {
                             Id = new Guid("4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4088),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(404),
                             IsDeleted = false,
                             Name = "Ruse"
                         },
                         new
                         {
                             Id = new Guid("5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4117),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(430),
                             IsDeleted = false,
                             Name = "Stara Zagora"
                         },
                         new
                         {
                             Id = new Guid("6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4122),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(435),
                             IsDeleted = false,
                             Name = "Pleven"
                         },
                         new
                         {
                             Id = new Guid("7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4127),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(443),
                             IsDeleted = false,
                             Name = "Sliven"
                         },
                         new
                         {
                             Id = new Guid("8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4133),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(447),
                             IsDeleted = false,
                             Name = "Dobrich"
                         },
                         new
                         {
                             Id = new Guid("9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4143),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(459),
                             IsDeleted = false,
                             Name = "Shumen"
                         },
                         new
                         {
                             Id = new Guid("0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4148),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(462),
                             IsDeleted = false,
                             Name = "Pernik"
                         },
                         new
                         {
                             Id = new Guid("1e2f3a4b-5c6d-7e8f-9a0b-1c2d3e4f5a6b"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4153),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(466),
                             IsDeleted = false,
                             Name = "Haskovo"
                         },
                         new
                         {
                             Id = new Guid("2f3a4b5c-6d7e-8f9a-0b1c-2d3e4f5a6b7c"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4158),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(470),
                             IsDeleted = false,
                             Name = "Yambol"
                         },
                         new
                         {
                             Id = new Guid("3a4b5c6d-7e8f-9a0b-1c2d-3e4f5a6b7c8d"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4165),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(474),
                             IsDeleted = false,
                             Name = "Pazardzhik"
                         },
                         new
                         {
                             Id = new Guid("4b5c6d7e-8f9a-0b1c-2d3e-4f5a6b7c8d9e"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4184),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1106),
                             IsDeleted = false,
                             Name = "Blagoevgrad"
                         },
                         new
                         {
                             Id = new Guid("5c6d7e8f-9a0b-1c2d-3e4f-5a6b7c8d9e0f"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4189),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1131),
                             IsDeleted = false,
                             Name = "Veliko Tarnovo"
                         },
                         new
                         {
                             Id = new Guid("6d7e8f9a-0b1c-2d3e-4f5a-6b7c8d9e0f1a"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4194),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1136),
                             IsDeleted = false,
                             Name = "Vratsa"
                         },
                         new
                         {
                             Id = new Guid("7e8f9a0b-1c2d-3e4f-5a6b-7c8d9e0f1a2b"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4199),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1148),
                             IsDeleted = false,
                             Name = "Gabrovo"
                         },
                         new
                         {
                             Id = new Guid("8f9a0b1c-2d3e-4f5a-6b7c-8d9e0f1a2b3c"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4294),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1152),
                             IsDeleted = false,
                             Name = "Vidin"
                         },
                         new
                         {
                             Id = new Guid("9a0b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4300),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1232),
                             IsDeleted = false,
                             Name = "Kardzhali"
                         },
                         new
                         {
                             Id = new Guid("0b1c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4305),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1238),
                             IsDeleted = false,
                             Name = "Kyustendil"
                         },
                         new
                         {
                             Id = new Guid("1c2d3e4f-5a6b-7c8d-9e0f-1a2b3c4d5e6f"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4312),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1242),
                             IsDeleted = false,
                             Name = "Montana"
                         },
                         new
                         {
                             Id = new Guid("2d3e4f5a-6b7c-8d9e-0f1a-2b3c4d5e6f7a"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4317),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1248),
                             IsDeleted = false,
                             Name = "Lovech"
                         },
                         new
                         {
                             Id = new Guid("3e4f5a6b-7c8d-9e0f-1a2b-3c4d5e6f7a8b"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4321),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1252),
                             IsDeleted = false,
                             Name = "Razgrad"
                         },
                         new
                         {
                             Id = new Guid("4f5a6b7c-8d9e-0f1a-2b3c-4d5e6f7a8b9c"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4326),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1255),
                             IsDeleted = false,
                             Name = "Targovishte"
                         },
                         new
                         {
                             Id = new Guid("5a6b7c8d-9e0f-1a2b-3c4d-5e6f7a8b9c0d"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4331),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1268),
                             IsDeleted = false,
                             Name = "Silistra"
                         },
                         new
                         {
                             Id = new Guid("6b7c8d9e-0f1a-2b3c-4d5e-6f7a8b9c0d1e"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(4348),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(1282),
                             IsDeleted = false,
                             Name = "Smolyan"
                         });
@@ -767,7 +770,7 @@ namespace VetTime.Data.Migrations
                         new
                         {
                             Id = new Guid("b3e77258-dd68-4b24-ae5a-98968d7ec371"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(3492),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(50),
                             FirstName = "Nicole",
                             IsDeleted = false,
                             LastName = "Aleksieva",
@@ -931,7 +934,7 @@ namespace VetTime.Data.Migrations
                         {
                             Id = new Guid("e1da8c11-27f5-4a8b-8c22-abec84d1995b"),
                             AddressId = new Guid("4de1b74b-9a84-4b00-a70f-178b7956ef32"),
-                            CreatedOn = new DateTime(2025, 5, 4, 11, 53, 43, 882, DateTimeKind.Local).AddTicks(7073),
+                            CreatedOn = new DateTime(2025, 5, 4, 11, 34, 50, 704, DateTimeKind.Local).AddTicks(3564),
                             FirstName = "Veronika",
                             IsDeleted = false,
                             LastName = "Zheleva",

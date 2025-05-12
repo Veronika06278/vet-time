@@ -6,9 +6,12 @@
 <link href="~/css/schedule.css" rel="stylesheet" />
 
 <div class="container mt-5">
-    <!-- профилът -->
     <div class="row mb-4 align-items-center">
         <div class="col-md-4">
+            @if (string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                Model.ImageUrl = "https://fdlc.org/wp-content/uploads/2021/01/157-1578186_user-profile-default-image-png-clipart.png.jpeg";
+            }
             <img src="@Model.ImageUrl"
                  alt="@Model.FirstName @Model.LastName"
                  class="img-fluid rounded"
@@ -24,17 +27,14 @@
 
     <hr />
 
-    <!-- график -->
     <h4>Make an appointment</h4>
     <form asp-controller="Vet" asp-action="BookAppointment" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" name="vetId" value="@Model.Id" />
         <input type="hidden" name="appointmentTime" id="SelectedAppointmentTime" />
 
-        <!-- 1) Заглавия на дните -->
         <div class="d-flex border-bottom pb-2 mb-3">
             @{
-                // взимаме всички различни дати
                 var days = Model.AllAppointments.Keys
                 .Select(dt => dt.Date)
                 .Distinct()
@@ -51,7 +51,6 @@
             }
         </div>
 
-        <!-- 2) Слотовете, по дни -->
         @for (int i = 0; i < days.Count; i++)
         {
             var day = days[i];
@@ -83,23 +82,41 @@
         document.querySelectorAll('.day-header').forEach(h => {
             h.addEventListener('click', () => {
                 var idx = h.getAttribute('data-day-index');
+
+                // 1) Махаме 'selected' от всички дни
+                document.querySelectorAll('.day-header')
+                    .forEach(d => d.classList.remove('selected'));
+
+                // 2) Добавяме 'selected' на кликнатия
+                h.classList.add('selected');
+
+                // 3) Скриваме всички контейнери със слотове
                 document.querySelectorAll('.slot-day-container')
                     .forEach(c => c.style.display = 'none');
+
+                // 4) Показваме този, съответстващ на data-day-index
                 document.querySelector(`.slot-day-container[data-day-index="${idx}"]`)
                     .style.display = 'block';
             });
         });
 
-        
         // Избор на слот
         document.querySelectorAll('.slot.free').forEach(el => {
             el.addEventListener('click', () => {
-                // вземаме time ISO
+                // 1) Махаме 'selected' от всички слотове
+                document.querySelectorAll('.slot.selected')
+                    .forEach(s => s.classList.remove('selected'));
+
+                // 2) Добавяме 'selected' на този
+                el.classList.add('selected');
+
+                // 3) Вземаме ISO-времето
                 var apptTime = el.getAttribute('data-time');
                 document.getElementById('SelectedAppointmentTime').value = apptTime;
                 document.getElementById('saveButton').disabled = false;
             });
         });
-
     </script>
 }
+
+

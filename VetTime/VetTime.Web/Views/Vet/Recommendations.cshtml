@@ -11,7 +11,6 @@
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <!-- 🔍 Filter Form -->
     <form asp-controller="Vet" asp-action="Recommendations" method="post" class="mb-5">
         <div class="row g-3 align-items-end">
             <div class="col-md-4">
@@ -51,7 +50,6 @@
         </div>
     </form>
 
-    <!-- 🧾 Vet Cards -->
     <div class="row">
         @if (Model.Vets != null && Model.Vets.Any())
         {
@@ -59,6 +57,10 @@
             {
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow">
+                        @if (string.IsNullOrEmpty(vet.ImageUrl))
+                        {
+                            vet.ImageUrl = "https://fdlc.org/wp-content/uploads/2021/01/157-1578186_user-profile-default-image-png-clipart.png.jpeg";
+                        }
                         <img src="@vet.ImageUrl" class="card-img-top" alt="Image of @vet.FirstName @vet.LastName">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">@vet.FirstName @vet.LastName</h5>

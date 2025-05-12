@@ -39,6 +39,18 @@ namespace VetTime.Data.Seeding
                 PhoneNumber = "0887564962",
             });
 
+            values.Add(new ApplicationUser()
+            {
+                Id = new Guid("e7cab530-e2f0-418d-9577-dd1b6710c05e"),
+                UserName = "admin@admin.com",
+                NormalizedUserName = "ADMIN@ADMIN.COM",
+                Email = "admin@admin.com",
+                NormalizedEmail = "ADMIN@ADMIN.COM",
+                EmailConfirmed = false,
+                SecurityStamp = "92120f9e-6bfb-4801-b8d9-d424621f19c7",
+                PhoneNumber = "0887698491"
+            });
+
             var hasher = new PasswordHasher<ApplicationUser>();
 
             foreach (var user in values)

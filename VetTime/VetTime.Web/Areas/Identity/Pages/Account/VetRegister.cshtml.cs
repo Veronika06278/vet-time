@@ -14,6 +14,7 @@ using System.Text.Encodings.Web;
 using VetTime.Data;
 using VetTime.Data.Models;
 using VetTime.Services.Interfaces;
+using VetTime.Web.Common;
 using VetTime.Web.ViewModels.Home;
 
 namespace VetTime.Web.Areas.Identity.Pages.Account
@@ -168,6 +169,8 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, ApplicationConstants.VeterinarianRoleName);
+
                     //Tuk suzdava City Entity
                     Guid cityId = _cityService.Add(Input.CityName);
                     //Tuk suzdavam adress Entity

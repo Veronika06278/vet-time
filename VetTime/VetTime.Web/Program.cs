@@ -4,6 +4,8 @@ using VetTime.Data;
 using VetTime.Data.Models;
 using VetTime.Services;
 using VetTime.Services.Interfaces;
+using VetTime.Web.Extentions;
+using static VetTime.Web.Common.ApplicationConstants;
 
 namespace VetTime.Web
 {
@@ -19,7 +21,14 @@ namespace VetTime.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireNonAlphanumeric=false;
+                options.Password.RequireDigit=false;
+                options.Password.RequireLowercase=false;
+                options.Password.RequireUppercase=false;
+            })
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
@@ -51,6 +60,12 @@ namespace VetTime.Web
 
             app.UseAuthentication();   
             app.UseAuthorization();
+            app.SeedRole(AdminEmail, AdminRoleName);
+            app.SeedRole(VeterinarianEmail, VeterinarianRoleName);
+
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

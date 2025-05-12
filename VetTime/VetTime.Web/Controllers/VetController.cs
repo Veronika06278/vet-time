@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using VetTime.Web.ViewModels.Vet;
+using VetTime.Web.Extentions;
 
 namespace VetTime.Web.Controllers
 {
@@ -32,6 +33,17 @@ namespace VetTime.Web.Controllers
             _dbContext = dbContext;
             _userManager = userManager;
         }
+        [HttpGet]
+        public async Task<IActionResult> Recommendations()
+        {
+            HomeViewModel model = new HomeViewModel();
+            model.Cities = await _cityService.GetAllCityNames();
+            model.Specializations = _specializationService.GetAllSpecializations();
+            model.Vets = _vetService
+                .GetVetsInformation(model.Specialization, model.CityName, model.VetFirstName, model.VetLastName);
+
+            return View(model);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Recommendations(HomeViewModel model)
@@ -39,12 +51,13 @@ namespace VetTime.Web.Controllers
             model.Cities = await _cityService.GetAllCityNames();
             model.Specializations = _specializationService.GetAllSpecializations();
             model.Vets = _vetService
-                .GetVetsInformation(/*model.Id, */model.Specialization, model.CityName, model.VetFirstName, model.VetLastName);
+                .GetVetsInformation(model.Specialization, model.CityName, model.VetFirstName, model.VetLastName);
 
             return View(model);
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Details(Guid id)
         {
             VetDetailsViewModel model = await _vetService.GetVetDetails(id);
@@ -61,39 +74,21 @@ namespace VetTime.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> BookAppointment(Guid vetId, DateTime appointmentTime)
         {
-            // 1) Ако не е избран час, върни обратно
             if (appointmentTime == default)
                 return RedirectToAction(nameof(Details), new { id = vetId });
 
-            // 2) Взимаме UserId от claim и парсваме към Guid
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            appointmentTime = appointmentTime.AddHours(3);
+
+            var userIdString = User.GetId();
             if (string.IsNullOrEmpty(userIdString)
              || !Guid.TryParse(userIdString, out var userIdGuid))
             {
-                return Challenge(); // не е логнат
+                return RedirectToAction(nameof(Recommendations));
             }
 
-            // 3) Намираме съществуващ Client по UserId
             var client = await _dbContext.Clients
                 .SingleOrDefaultAsync(c => c.UserId == userIdGuid);
-
-            // ─── ТУК добавяш новия код ───
-            if (client == null)
-            {
-                client = new Client
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = userIdGuid,
-                    FirstName = "",   // задължителни полета трябва да са непразни
-                    LastName = "",
-                    // попълни други [Required] пропъртита на Client, ако имаш
-                };
-                _dbContext.Clients.Add(client);
-                await _dbContext.SaveChangesAsync();
-            }
-            // ──────────────────────────────
-
-            // 4) Collision check: проверка дали слотът вече е зает
+            
             bool clash = await _dbContext.Appointments.AnyAsync(a =>
                 a.VetId == vetId &&
                 a.AppointmentTime == appointmentTime &&
@@ -104,11 +99,10 @@ namespace VetTime.Web.Controllers
                 return RedirectToAction(nameof(Details), new { id = vetId });
             }
 
-            // 5) Създаваме и записваме срещата
             var appt = new Appointment
             {
                 VetId = vetId,
-                ClientId = client.Id,
+                ClientId = client!.Id,
                 AppointmentTime = appointmentTime,
                 AppointmentType = AppointmentType.Checkup,
                 HasVisited = false,
@@ -118,7 +112,6 @@ namespace VetTime.Web.Controllers
             _dbContext.Appointments.Add(appt);
             await _dbContext.SaveChangesAsync();
 
-            // 6) След успешно записване – връщаме се на Home
             return RedirectToAction("Index", "Home");
         }
 

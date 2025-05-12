@@ -1,0 +1,21 @@
+﻿@model VetTime.Web.Areas.Admin.Models.AdminDashboardViewModel
+
+<h2>Admin Dashboard</h2>
+<dl>
+    <dt>Total Users</dt>
+    <dd>@Model.TotalUsers</dd>
+    <dt>Total Clients</dt>
+    <dd>@Model.TotalClients</dd>
+    <dd>@Model.ActiveVeterinarians</dd>
+    <dt>Upcoming Week Appointments</dt>
+    <dd>@Model.UpcomingWeekAppointments</dd>
+</dl>
+
+<h3>Appointments by Day (Next 7 Days)</h3>
+<ul>
+    @foreach (var kvp in Model.ReservationsByDay)
+    {
+        <li>@kvp.Key.ToString("dd.MM.yyyy"): @kvp.Value</li>
+    }
+</ul>
+

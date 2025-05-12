@@ -52,7 +52,7 @@
             </form>
         </div>
 
-        <!-- 🖼 Image on the right -->
+        
         <div class="col-md-6 d-flex justify-content-center">
             <img src="https://img.freepik.com/premium-photo/male-veterinarian-cartoon-flat-design-isolated_776894-118392.jpg?w=2000"
                  alt="Veterinarian Illustration"
@@ -65,70 +65,3 @@
 
 @Html.Partial("_ValidationScriptsPartial")
 
-
-
-
-
-@* 
-@model VetTime.Web.ViewModels.Home.HomeViewModel
-
-@{
-    ViewData["Title"] = "Choose a city";
-}
-
-<h2>@ViewData["Title"]</h2>
-
-@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-<div class="col-md-4">
-    <form method="post">
-
-        <div class="form-floating mb-3">
-            <input asp-for="@Model.VetFullName" class="form-control" autocomplete="" aria-required="true" placeholder="" />
-            <label asp-for="@Model.VetFullName">Full Name</label>
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        </div>
-
-        <div class="form-group mb-3">
-            <select asp-for="@Model.CityName" class="form-control custom-dropdown">
-                <option value="" selected>Choose City</option>
-                @foreach (string city in Model.Cities)
-                {
-                    <option value="@city">@city</option>
-                }
-            </select>
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        </div>
-
-        <div class="form-group mb-3">
-            <select asp-for="@Model.Specialization" class="form-control custom-dropdown">
-                <option value="" selected>Choose what type your animal is</option>
-                @foreach (string specialization in Model.Specializations)
-                {
-                    <option value="@specialization">@specialization</option>
-                }
-            </select>
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        </div>
-
-        <button type="submit" class="btn btn-primary">Search</button>
-
-        
-    </form>
-    <div class="col-md-6 d-flex justify-content-center align-items-center">
-        <img src="https://img.freepik.com/premium-photo/male-veterinarian-cartoon-flat-design-isolated_776894-118392.jpg?w=2000"
-             alt="Veterinarian Illustration"
-             class="img-fluid rounded shadow"
-             style="max-height: 350px;" />
-    </div>
-</div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
- *@
