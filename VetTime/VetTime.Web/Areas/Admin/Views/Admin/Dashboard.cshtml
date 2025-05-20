@@ -1,15 +1,43 @@
 ﻿@model VetTime.Web.Areas.Admin.Models.AdminDashboardViewModel
-
+@{
+    Layout = "_Layout";
+}
 <h2>Admin Dashboard</h2>
-<dl>
-    <dt>Total Users</dt>
-    <dd>@Model.TotalUsers</dd>
-    <dt>Total Clients</dt>
-    <dd>@Model.TotalClients</dd>
-    <dd>@Model.ActiveVeterinarians</dd>
-    <dt>Upcoming Week Appointments</dt>
-    <dd>@Model.UpcomingWeekAppointments</dd>
-</dl>
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body text-center">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text display-6">@Model.TotalUsers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body text-center">
+                <h5 class="card-title">Total Clients</h5>
+                <p class="card-text display-6">@Model.TotalClients</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body text-center">
+                <h5 class="card-title">Active Vets</h5>
+                <p class="card-text display-6">@Model.ActiveVeterinarians</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body text-center">
+                <h5 class="card-title">Upcoming Appts</h5>
+                <p class="card-text display-6">@Model.UpcomingWeekAppointments</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <h3>Appointments by Day (Next 7 Days)</h3>
 <ul>
@@ -18,4 +46,31 @@
         <li>@kvp.Key.ToString("dd.MM.yyyy"): @kvp.Value</li>
     }
 </ul>
+
+<h2 class="mt-4">Appointments Table</h2>
+
+<div class="table-responsive shadow p-3 bg-white rounded">
+    <table class="table table-bordered table-hover text-center align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Client Name</th>
+                <th scope="col">Veterinarian Name</th>
+                <th scope="col">Date & Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Appointments.Count; i++)
+            {
+                var appt = Model.Appointments[i];
+                <tr>
+                    <th scope="row">@(i + 1)</th>
+                    <td>@appt.ClientFirstName @appt.ClientLastName</td>
+                    <td>@appt.VetFirstName @appt.VetLastName</td>
+                    <td>@appt.AppointmentTime.ToString("dd.MM.yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 

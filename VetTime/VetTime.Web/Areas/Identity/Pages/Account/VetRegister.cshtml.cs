@@ -39,7 +39,8 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
             ICityService cityService,
             IAddressService addressService,
             IVetService vetService,
-            ISpecializationService specializationService)
+            ISpecializationService specializationService
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -195,7 +196,8 @@ namespace VetTime.Web.Areas.Identity.Pages.Account
                         this.AddVetSpecialization("Farm Animals", vetId);
                     }
 
-                    
+                    //Tuk trqbwa da si dobawq usera da e rolq vet
+                    await _userManager.AddToRoleAsync(user, ApplicationConstants.VeterinarianRoleName);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     //TODO:return vetr to profile page
